@@ -1,0 +1,633 @@
+/* App Layout */
+.app-container {
+  min-height: 100vh;
+  padding-bottom: 4rem;
+}
+
+/* Header */
+.header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 1.5rem 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.app-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.app-title::before {
+  content: "🗳️";
+}
+
+.wallet-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.wallet-address {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  color: #fff;
+  font-family: monospace;
+}
+
+.connect-btn {
+  background: #fff;
+  color: #667eea;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.connect-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.connect-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Page Navigation */
+.page-nav {
+  max-width: 1200px;
+  margin: 0 auto 1.5rem;
+  padding: 0 1.5rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.nav-tab {
+  background: #2d3748;
+  border: 2px solid #4a5568;
+  border-radius: 10px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #a0aec0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-tab:hover {
+  background: #3d4a5c;
+  color: #e2e8f0;
+}
+
+.nav-tab.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-color: #667eea;
+  color: #fff;
+}
+
+.status-message {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.status-message.error {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+}
+
+.status-message.loading {
+  background: rgba(59, 130, 246, 0.2);
+  color: #93c5fd;
+}
+
+/* Main Content */
+.main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* Section Styles */
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #4a5568;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.section-title.admin::before {
+  content: "⚙️";
+}
+
+.section-title.tokens::before {
+  content: "🪙";
+}
+
+.section-title.voter::before {
+  content: "👤";
+}
+
+.section-title.proposals::before {
+  content: "📋";
+}
+
+.section-title.treasury::before {
+  content: "🏦";
+}
+
+.section-description {
+  color: #a0aec0;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  margin-top: -0.5rem;
+}
+
+/* Grid Layout */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Card Styles */
+.card {
+  background: #2d3748;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid #4a5568;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.card h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Form Styles */
+.card form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.card input {
+  background: #1a202c;
+  border: 1px solid #4a5568;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  color: #e2e8f0;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.card input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+.card input::placeholder {
+  color: #718096;
+}
+
+/* Button Styles */
+.card button,
+.btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.card button:hover,
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  filter: brightness(1.1);
+}
+
+.btn-secondary {
+  background: #4a5568;
+}
+
+.btn-secondary:hover {
+  background: #5a6578;
+  box-shadow: 0 4px 15px rgba(74, 85, 104, 0.4);
+}
+
+/* Info Display */
+.info-display {
+  background: #1a202c;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 0.75rem;
+}
+
+.info-display p {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+  color: #cbd5e0;
+  word-break: break-all;
+}
+
+.info-display p:first-child {
+  margin-top: 0;
+}
+
+.info-display p:last-child {
+  margin-bottom: 0;
+}
+
+.info-label {
+  color: #a0aec0;
+  font-weight: 500;
+}
+
+.info-value {
+  color: #e2e8f0;
+}
+
+.highlight {
+  color: #9f7aea;
+  font-weight: 600;
+}
+
+/* Balance Display */
+.balance-display {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #9f7aea;
+  margin: 0.5rem 0;
+  text-align: center;
+}
+
+.balance-label {
+  font-size: 0.85rem;
+  color: #718096;
+  text-align: center;
+}
+
+/* Status Badge */
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.status-badge.registered {
+  background: rgba(72, 187, 120, 0.2);
+  color: #68d391;
+}
+
+.status-badge.not-registered {
+  background: rgba(237, 137, 54, 0.2);
+  color: #f6ad55;
+}
+
+/* Error Display */
+.error-text {
+  color: #fc8181;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.info-text {
+  color: #a0aec0;
+  font-size: 0.95rem;
+}
+
+/* Treasury Info Styles */
+.treasury-info-card {
+  grid-column: 1 / -1;
+}
+
+.treasury-details {
+  width: 100%;
+}
+
+.treasury-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #4a5568;
+}
+
+.treasury-row:last-child {
+  border-bottom: none;
+}
+
+.address-value {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: monospace;
+  font-size: 0.85rem;
+}
+
+.copy-btn-small {
+  background: transparent !important;
+  border: none !important;
+  padding: 0.25rem !important;
+  cursor: pointer;
+  font-size: 0.8rem;
+  width: auto !important;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.copy-btn-small:hover {
+  opacity: 1;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.treasury-config-values {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #4a5568;
+}
+
+.config-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.config-label {
+  font-size: 0.75rem;
+  color: #718096;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.config-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #9f7aea;
+}
+
+/* All Proposals Component */
+.all-proposals-card {
+  grid-column: 1 / -1;
+}
+
+.proposals-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.filter-tab {
+  background: #1a202c !important;
+  border: 1px solid #4a5568 !important;
+  padding: 0.5rem 1rem !important;
+  font-size: 0.85rem !important;
+  color: #a0aec0;
+  border-radius: 6px !important;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: auto !important;
+}
+
+.filter-tab:hover {
+  background: #2d3748 !important;
+  color: #e2e8f0;
+}
+
+.filter-tab.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  border-color: #667eea !important;
+  color: #fff;
+}
+
+.refresh-btn {
+  width: auto !important;
+  padding: 0.5rem 1rem !important;
+  font-size: 0.85rem !important;
+}
+
+.proposals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.proposal-item {
+  background: #1a202c;
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  border-left: 4px solid #4a5568;
+  transition: all 0.2s ease;
+}
+
+.proposal-item.active {
+  border-left-color: #68d391;
+}
+
+.proposal-item.ended {
+  border-left-color: #fc8181;
+  opacity: 0.8;
+}
+
+.proposal-item:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.proposal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.proposal-id {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #9f7aea;
+}
+
+.proposal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.proposal-info {
+  font-size: 1rem;
+  color: #e2e8f0;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.proposal-stats {
+  display: flex;
+  gap: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: #718096;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stat-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #9f7aea;
+}
+
+.stat-value.time {
+  color: #68d391;
+  font-size: 0.95rem;
+}
+
+.proposal-item.ended .stat-value.time {
+  color: #fc8181;
+}
+
+.proposal-deadline {
+  font-size: 0.85rem;
+  color: #718096;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .wallet-section {
+    flex-direction: column;
+  }
+
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .app-title {
+    font-size: 1.4rem;
+  }
+
+  .all-proposals-card {
+    grid-column: 1 / -1;
+  }
+
+  .proposals-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-tabs {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .refresh-btn {
+    width: 100% !important;
+  }
+
+  .proposal-stats {
+    flex-wrap: wrap;
+  }
+
+  .page-nav {
+    flex-direction: column;
+  }
+
+  .nav-tab {
+    justify-content: center;
+  }
+
+  .treasury-info-card {
+    grid-column: 1 / -1;
+  }
+
+  .treasury-config-values {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .treasury-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+}
