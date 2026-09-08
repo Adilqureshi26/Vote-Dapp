@@ -7,7 +7,7 @@ import { getAssociatedTokenAddress } from '@solana/spl-token';
 const TreasuryInfo = ({ walletAddress, idlWithAddress, getProvider }) => {
     const [treasuryInfo, setTreasuryInfo] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState(null); 
 
     const fetchTreasuryInfo = async () => {
         if (!walletAddress) return;
@@ -33,21 +33,24 @@ const TreasuryInfo = ({ walletAddress, idlWithAddress, getProvider }) => {
             setTreasuryInfo({
                 treasuryConfig: treasuryConfigPda.toBase58(),
                 solVault: solVaultPda.toBase58(),
-                xMint: treasuryAccountData.xMint.toBase58(), // reading from the config
+                xMint: treasuryAccountData.xMints.toBase58(), // reading from the config
                 treasuryTokenAccount: treasuryAccountData.treasuryTokenAccount.toBase58(),
                 authority: treasuryAccountData.authority.toBase58(),
                 solPrice: treasuryAccountData.solPrice.toString(),
-                tokensPerPurchase: treasuryAccountData.tokensPerPurchase.toString(),
+                tokensPerPurchase: treasuryAccountData.tokenPerPerchase.toString(),
                 isInitialized: true, 
             });
 
         } catch (e) {
-            // Treasury not initialized yet - show only treasuryConfig and solVault
+            console.error("Could not fetch or decode the treasury config:", e);
+            // The account may not exist. Keep the derived PDA addresses visible,
+            // but do not hide other fetch/decode errors as an initialization state.
             setTreasuryInfo({
                 treasuryConfig: treasuryConfigPda.toBase58(),
                 solVault: solVaultPda.toBase58(),
                 isInitialized: false,
-            })
+            });
+            setError(e?.message || "Could not fetch or decode the treasury config.");
         }
         } catch (err) {
             console.error("Error fetching treasury info:", err);
