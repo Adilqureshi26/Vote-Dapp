@@ -6,7 +6,7 @@ mod event;
 use context::*;
 use error::*;
 use event::*;
-declare_id!("DTDxvMFTRsyBUqRuxjWMN9VxLTBVX9rJCFdBJeqZhnWX");
+declare_id!("GoqWVuJpZKztNrydkkKtLMPFtQqNsnZyiD9Nrwqdmv9d");
 use anchor_lang::system_program;
 use anchor_spl::token::{mint_to, transfer, MintTo, Transfer};
 
@@ -36,6 +36,7 @@ use super::*;
         treasury_config_account.sol_price = sol_price;
         treasury_config_account.x_mints = ctx.accounts.x_mint.key();
         treasury_config_account.token_per_perchase = token_per_perchase;
+        treasury_config_account.treasury_token_account = ctx.accounts.treasury_token_account.key();
 
         let proposal_counter_account = &mut ctx.accounts.proposal_counter_account;
         require!(

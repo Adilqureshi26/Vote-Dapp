@@ -49,7 +49,7 @@ const InitializeTreasury = ({ walletAddress, idlWithAddress, getProvider }) => {
         const solLamports = solToLamports(solPrice);
         const tokens = tokensToRaw(tokensPerPurchase);
 
-        const tx = await program.methods.initializeTreasury(new anchor.BN(solLamports), new anchor.BN(tokens)).accounts({
+        const tx = await program.methods.initializeTreasury(new anchor.BN(solLamports), new anchor.BN(tokens)).accountsPartial({
             authority: provider.wallet.publicKey,
             treasuryConfig: treasuryConfigPda,
             mintAuthority: mintAuthorityPda,
