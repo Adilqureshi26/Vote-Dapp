@@ -1,13 +1,11 @@
-import React from 'react'
-import { SEEDS } from '../constants/constants';
-import { PublicKey } from '@solana/web3.js';
 import * as anchor from "@coral-xyz/anchor";
 import { useState } from 'react';
-import { getAssociatedTokenAddress } from '@solana/spl-token';
 
 const InitializeTreasury = ({ walletAddress, idlWithAddress, getProvider }) => {
     const [solPrice, setSolPrice] = useState('');
     const [tokensPerPurchase, setTokensPerPurchase] = useState('');
+    const [error, setError] = useState('');
+    const [isInitializing, setIsInitializing] = useState(false);
 
     // Convert SOL to lamports (1 SOL = 1,000,000,000 lamports)
     const solToLamports = (sol) => {
@@ -25,43 +23,32 @@ const InitializeTreasury = ({ walletAddress, idlWithAddress, getProvider }) => {
             return;
         }
 
-        const provider = getProvider();
-        const program = new anchor.Program(idlWithAddress, provider);
-
-        let [treasuryConfigPda] = PublicKey.findProgramAddressSync(
-            [new TextEncoder().encode(SEEDS.TREASURY_CONFIG)], program.programId
-        );
-        let [mintAuthorityPda] = PublicKey.findProgramAddressSync(
-            [new TextEncoder().encode(SEEDS.MINT_AUTHORITY)], program.programId
-        );
-        let [solVaultPda] = PublicKey.findProgramAddressSync(
-            [new TextEncoder().encode(SEEDS.SOL_VAULT)], program.programId
-        );
-        let [xMintPda] = PublicKey.findProgramAddressSync(
-            [new TextEncoder().encode(SEEDS.X_MINT)], program.programId
-        );
-        let [proposalCounterPda] = PublicKey.findProgramAddressSync(
-            [new TextEncoder().encode(SEEDS.PROPOSAL_COUNTER)], program.programId
-        );
-
-        let treasuryTokenAccount = await getAssociatedTokenAddress(xMintPda, provider.wallet.publicKey); 
-
         const solLamports = solToLamports(solPrice);
         const tokens = tokensToRaw(tokensPerPurchase);
+        if (!Number.isSafeInteger(solLamports) || solLamports <= 0 || !Number.isSafeInteger(tokens) || tokens <= 0) {
+            setError("Enter a positive SOL price and a positive token amount.");
+            return;
+        }
 
-        const tx = await program.methods.initializeTreasury(new anchor.BN(solLamports), new anchor.BN(tokens)).accountsPartial({
-            authority: provider.wallet.publicKey,
-            treasuryConfig: treasuryConfigPda,
-            mintAuthority: mintAuthorityPda,
-            solVault: solVaultPda,
-            xMint: xMintPda,
-            proposalCounter: proposalCounterPda,
-            treasuryTokenAccount: treasuryTokenAccount,
-            // systemProgram: anchor.web3.SystemProgram.programId,
-            // tokenProgram: anchor.utils.token.TOKEN_PROGRAM_ID,
-            // rent: anchor.web3.SYSVAR_RENT_PUBKEY,
-        }).rpc();
-        console.log("Treasury initialized with transaction: ", tx);
+        setError('');
+        setIsInitializing(true);
+        try {
+            const provider = getProvider();
+            const program = new anchor.Program(idlWithAddress, provider);
+
+            // The IDL contains all PDA and program-address constraints, so
+            // Anchor 0.32 resolves the remaining accounts from the authority.
+            const tx = await program.methods
+                .initializeTreasury(new anchor.BN(solLamports), new anchor.BN(tokens))
+                .accounts({ authority: provider.wallet.publicKey })
+                .rpc();
+            console.log("Treasury initialized with transaction: ", tx);
+        } catch (err) {
+            console.error("Treasury initialization failed:", err);
+            setError(err?.transactionMessage || err?.message || "Treasury initialization failed.");
+        } finally {
+            setIsInitializing(false);
+        }
     }
     return (
         <div className="card">
@@ -72,8 +59,11 @@ const InitializeTreasury = ({ walletAddress, idlWithAddress, getProvider }) => {
             }}>
                 <input type="number" step="0.001" placeholder="SOL Price (e.g., 1 for 1 SOL)" value={solPrice} onChange={(e) => setSolPrice(e.target.value)} />
                 <input type="number" step="0.01" placeholder="Tokens Per Purchase (e.g., 1000)" value={tokensPerPurchase} onChange={(e) => setTokensPerPurchase(e.target.value)} />
-                <button type="submit">Initialize Treasury</button>
+                <button type="submit" disabled={isInitializing}>
+                    {isInitializing ? 'Initializing...' : 'Initialize Treasury'}
+                </button>
             </form>
+            {error && <p className="error-text">{error}</p>}
         </div>
     )
 }

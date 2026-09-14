@@ -26,7 +26,19 @@ const TreasuryInfo = ({ walletAddress, idlWithAddress, getProvider }) => {
             const [solVaultPda] = PublicKey.findProgramAddressSync(
                         [new TextEncoder().encode(SEEDS.SOL_VAULT)], program.programId
                     );
-            try {
+            // A missing config is the normal state before the one-time
+            // initializeTreasury instruction succeeds. Check it first so
+            // Anchor does not throw an expected "account does not exist" error.
+            const configAccountInfo = await provider.connection.getAccountInfo(treasuryConfigPda);
+            if (!configAccountInfo) {
+                setTreasuryInfo({
+                    treasuryConfig: treasuryConfigPda.toBase58(),
+                    solVault: solVaultPda.toBase58(),
+                    isInitialized: false,
+                });
+                return;
+            }
+
             const treasuryAccountData = await program.account.treasuryConfig.fetch(treasuryConfigPda);
             
             // use values directly from the config instead of deriving 
@@ -41,20 +53,9 @@ const TreasuryInfo = ({ walletAddress, idlWithAddress, getProvider }) => {
                 isInitialized: true, 
             });
 
-        } catch (e) {
-            console.error("Could not fetch or decode the treasury config:", e);
-            // The account may not exist. Keep the derived PDA addresses visible,
-            // but do not hide other fetch/decode errors as an initialization state.
-            setTreasuryInfo({
-                treasuryConfig: treasuryConfigPda.toBase58(),
-                solVault: solVaultPda.toBase58(),
-                isInitialized: false,
-            });
-            setError(e?.message || "Could not fetch or decode the treasury config.");
-        }
         } catch (err) {
-            console.error("Error fetching treasury info:", err);
-            setError("Failed to fetch treasury info.");   
+            console.error("Could not fetch or decode the treasury config:", err);
+            setError(err?.message || "Could not fetch or decode the treasury config.");
         } finally {
             setLoading(false);
         }

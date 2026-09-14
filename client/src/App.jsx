@@ -18,7 +18,7 @@ import TreasuryInfo from './components/TreasuryInfo';
 import * as anchor from "@coral-xyz/anchor";
 import './App.css'
 
-const programID = new PublicKey("GoqWVuJpZKztNrydkkKtLMPFtQqNsnZyiD9Nrwqdmv9d");
+const programID = new PublicKey("EudLgzongnw6ywp9SwFFV3nP8c8jKCGnwSmSqQopaKYL");
 const idlWithAddress = { ...idl, address: programID.toBase58() };
 // Network configuration - switch between local and devnet
 // Local: "http://127.0.0.1:8899"
