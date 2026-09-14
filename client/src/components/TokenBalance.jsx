@@ -14,6 +14,22 @@ const TokenBalance = ({ walletAddress, idlWithAddress, getProvider, connection }
         if (!walletAddress) {
             return;
         }
+        const provider = getProvider();
+        const program = new anchor.Program(idlWithAddress, provider);
+
+        let [xMintPda] = PublicKey.findProgramAddressSync(
+            [new TextEncoder().encode(SEEDS.X_MINT)],
+            program.programId,
+        );
+         
+        try { 
+            const tokenAccount = await getAssociatedTokenAddress(xMintPda, provider.wallet.publicKey);
+            const accountInfo = await getAccount(connection, tokenAccount);
+            setBalance(Number(accountInfo.amount));
+        } catch (error) {
+            console.error("Error fetching token balance or no balance found:", error);
+            setBalance(0);
+        }
       
     }
 
