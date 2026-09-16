@@ -14,7 +14,28 @@ const ProposalInfo = ({ walletAddress, idlWithAddress, getProvider }) => {
             alert("Please connect your wallet");
             return;
         }
+
+        if (!proposalId || isNaN(proposalId) || Number(proposalId) < 0) {
+            alert("Please enter a valid Proposal ID.");
+            return;
+        }
+        const provider = getProvider();
+        const program = new anchor.Program(idlWithAddress, provider);
         
+        let [proposalPda] = PublicKey.findProgramAddressSync(
+            [new TextEncoder().encode(SEEDS.PROPOSAL), Buffer.from([Number(proposalId)])],
+            program.programId,
+        );
+
+        try {
+            const ProposalAccountData = await program.account.proposal.fetch(proposalPda);
+            setProposalData(ProposalAccountData);
+            setError('');
+        } catch (err) {
+            console.error("Failed to fetch proposal:", err);
+            setError(err?.message || "Failed to fetch proposal.");
+            setProposalData(null);
+        }
     }
 
     const formatDeadline = (timestamp) => {
